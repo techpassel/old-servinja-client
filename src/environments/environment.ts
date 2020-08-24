@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseApiUrl: "http://localhost:9005",
+  application: "Servinja",
+  encryptionSecretKey: "5oetDPOOieTjwrquD914kdyiQvqbmTY3OJaNrn",
+  gmailClientId : "1009032002256-ho8pvdt3rj79u1v16grkfsknhid4pki3.apps.googleusercontent.com",
+  gmailSecretKey : "2mebAuok38JcnZGAIOPXKK0C",
+  gmailUserAccountUsed : "techpasselorg@gmail.com",
+  fbClientId: "2906272782833537",
+  fbUserAccountUsed : "aaman422@gmail.com"
 };
 
 /*

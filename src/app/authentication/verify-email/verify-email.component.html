@@ -1,0 +1,14 @@
+<div>
+    <ng-container *ngIf="responseType; else noResponseTemplate">
+        <ng-container *ngIf="responseType == 'success'; else elseTemplate">
+            <p>Thanks for verifying your email. Now you are ready to use {{application | lowercase}} platform.</p>
+        </ng-container>
+        <ng-template #elseTemplate>
+            <p>Sorry this is an invalid token or token may be expired.Please try to login with your registered email and follow the instructions.</p>
+        </ng-template>
+        <p><a class="update-path" routerLink="/login">Click here</a> to move to login page.</p>
+    </ng-container>
+    <ng-template #noResponseTemplate>
+        <div>We are verifying your token.Please wait ...</div>
+    </ng-template> 
+</div>

@@ -1,0 +1,1 @@
+export let OnBoardingRoutes = ['', 'mobile-verification', 'document-submission'];
