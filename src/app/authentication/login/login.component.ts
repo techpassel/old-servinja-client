@@ -5,6 +5,7 @@ import { AuthenticationService } from 'src/services/authentication/authenticatio
 import { Router } from '@angular/router';
 import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { EncryptDecryptService } from "src/services/common/encrypt-decrypt.service";
+import { OnBoardingRoutes } from 'src/utils/common.util';
 
 @Component({
   selector: 'app-login',
@@ -94,18 +95,24 @@ export class LoginComponent implements OnInit {
         const res: any = response;
         this.loginResponseType = res.type;
         if (res.type === 'success') {
-          let usersecret = {};
+          let usersecret = {};          
           usersecret['token'] = res.token;
           usersecret['roles'] = res.roles;
-          usersecret['onboardingStage'] = res.onboardingstage;
+          usersecret['onboardingStage'] = parseInt(res.onboardingStage);
           let enc = this.encriptionService.encrypt(usersecret);         
           localStorage.setItem('access', enc);
-          this.router.navigate(['/onboard']);
+          
+          let routeType = null;
+          if(parseInt(res.onboardingStage) == 0){
+            routeType = res.roles.includes('admin') ? '/admin' : '/customer';
+          } else {
+            routeType = "/onboard/" + OnBoardingRoutes[parseInt(res.onboardingStage) - 1];
+          }
+          this.router.navigate([routeType]);
         }
         this.isProcessing = false;
       },
       (error) => {
-        console.log(error, "error in component");
         this.isProcessing = false;
       }
     );
@@ -156,7 +163,6 @@ export class LoginComponent implements OnInit {
   }
 
   socialUserSignin$(user): void {
-    console.log(user);
     // this.authenticationService.signInSocialUser(user).subscribe(response => {
     //   this.signOutSocialAccount();
     //   this.router.navigate(['/customer']);
@@ -164,7 +170,7 @@ export class LoginComponent implements OnInit {
   }
 
   onKeyUp(type) {
-    if ((type === 'email' && this.loginResponseType === 'invalidUser') ||
+    if ((type === 'username' && this.loginResponseType === 'invalidUser') ||
       (type === 'pass' && this.loginResponseType === 'incorrectPassword')) {
       this.loginResponseType = null;
     }

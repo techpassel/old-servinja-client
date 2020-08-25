@@ -16,27 +16,23 @@ export class AuthGuard implements CanActivate {
     let token = null;
     let onboardingStage = null;
     let routeType = null;
+
     if (access) {
       let data = this.encriptionService.decrypt(access);
       token = data?.token;
-      onboardingStage = data?.onboardingstage;
+      onboardingStage = data?.onboardingStage;
       const isExpired = token ? this.helper.isTokenExpired(token) : true;
       if (token && !isExpired) {
         if (onboardingStage == 0) {
-          let rolesInString = data?.roles;
-          let rolesInArray = rolesInString?.split(",")?.map(e => e.trim());
           //Following line needs to be modified incase other usertypes are added in future.
-          routeType = rolesInArray.includes('admin')?'/admin': rolesInArray.includes('customer')?'/customer':null;
+          routeType = data?.roles.includes('admin') ? '/admin' : data?.roles.includes('customer') ? '/customer' : null;
         } else {
           routeType = '/onboard';
         }
       }
     }
 
-    if(routeType)
-    {
-      console.log(routeType,"navigation to other route from authroute");
-      
+    if (routeType) {
       this.router.navigate([routeType]);
       return false;
     }

@@ -3,12 +3,21 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { EncryptDecryptService } from 'src/services/common/encrypt-decrypt.service';
+import { CommonService } from "src/services/common/common.service";
+import { NotificationService } from 'src/utils/notification.util';
+import { OnBoardingRoutes } from 'src/utils/common.util';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonGuard implements CanActivate {
-  constructor(private router: Router, private helper: JwtHelperService, private encriptionService: EncryptDecryptService) { };
+  constructor(
+    private router: Router, 
+    private helper: JwtHelperService, 
+    private encriptionService: EncryptDecryptService,
+    private commonService: CommonService,
+    private notify: NotificationService
+    ) { };
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -19,23 +28,23 @@ export class CommonGuard implements CanActivate {
     if (access) {
       let data = this.encriptionService.decrypt(access);
       token = data?.token;
-      onboardingStage = data?.onboardingstage;
-
+      onboardingStage = data?.onboardingStage;
       if (token && token != "") {
         const isExpired = this.helper.isTokenExpired(token);
         if (!isExpired) {
-          if (onboardingStage != 0) {
-            this.router.navigate(['/onboard']);
+          if (onboardingStage != 0 && !state.url.includes("/onboard")) {
+            //state.url gives current route url.
+            let routeType = "/onboard/" + OnBoardingRoutes[parseInt(onboardingStage) - 1];
+            this.router.navigate([routeType]);
             return false;
           }
           return true;
         }
       }
-      
-      else localStorage.removeItem('access');
     }
 
-    this.router.navigate(['/login']);
+    this.notify.showWarning("Your token is invalid or it has been expired. Please login again.");
+    this.commonService.logout();
     return false;
   }
 }

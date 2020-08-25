@@ -8,7 +8,7 @@
                 <div *ngIf="f.username.errors.email">Please enter a valid email address</div>
                 <div *ngIf="f.username.errors.minlength || f.username.errors.maxlength">Mobile number must contain 10 digits</div>
             </div>
-            <div *ngIf="loginResponseType === 'invalidUser'">Email does not exists.</div>
+            <div class="error-text" *ngIf="loginResponseType === 'invalidUser'">Email does not exists.</div>
         </div>
         <div>
             <input type="password" (keyup)="onKeyUp('pass')" placeholder="Password" formControlName="password">
@@ -16,7 +16,7 @@
                 <div *ngIf="f.password.errors.required">Password is required</div>
                 <div *ngIf="f.password.errors.minlength">Password must be atleast 6 characters long</div>
             </div>
-            <div *ngIf="loginResponseType === 'incorrectPassword'">Password is incorrect.</div>
+            <div class="error-text" *ngIf="loginResponseType === 'incorrectPassword'">Password is incorrect.</div>
         </div>
         <input type="submit" [value]="!isProcessing?'Submit':'Processing...'">
         <div class="row social-button-container">

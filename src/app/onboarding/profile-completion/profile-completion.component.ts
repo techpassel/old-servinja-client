@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OnboardingService } from "src/services/customer/onboarding.service";
 
 @Component({
   selector: 'app-profile-completion',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileCompletionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private onboardingService: OnboardingService) { }
 
   ngOnInit(): void {
+    this.testo$();
+  }
+
+  testo$(): void {
+    this.onboardingService.testOnboard().subscribe(
+    (response) => {
+      console.log(response,"reasponse");
+      
+    },
+    (error) => {
+      console.log(error, "error");
+      
+    }
+    );
   }
 
 }
