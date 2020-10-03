@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from 'src/models/user.model';
+import { User } from 'src/models/user.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/services/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
-import { EncryptDecryptService } from "src/services/common/encrypt-decrypt.service";
 import { OnBoardingRoutes } from 'src/utils/common.util';
+import { StoreService } from 'src/services/common/store.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ import { OnBoardingRoutes } from 'src/utils/common.util';
 })
 export class LoginComponent implements OnInit {
 
-  user: UserModel = new UserModel();
+  user: User = new User();
   submitted = false;
   signinForm: FormGroup;
   loginResponseType: string = null;
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     private authService: SocialAuthService,
     private authenticationService: AuthenticationService,
     private router: Router,
-    private encriptionService : EncryptDecryptService
+    private storeService: StoreService
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
    * Dynamically adding validation rule for phone and email based on what user have entered.
    */
   setEmailPhoneValidator(): void {
-    let usernameField = this.signinForm.get('username');
+    const usernameField = this.signinForm.get('username');
     if (this.isANumber(usernameField.value)) {
       usernameField.setValidators([Validators.required, Validators.compose([Validators.minLength(10), Validators.maxLength(10)])]);
     } else {
@@ -68,12 +68,12 @@ export class LoginComponent implements OnInit {
   /**
    * Getter for easy access to form fields
    */
-  get f() { return this.signinForm.controls; }
+  get f(): any { return this.signinForm.controls; }
 
   /**
    * Called on form submission.
    */
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
 
     // return from here if form is invalid
@@ -95,18 +95,16 @@ export class LoginComponent implements OnInit {
         const res: any = response;
         this.loginResponseType = res.type;
         if (res.type === 'success') {
-          let usersecret = {};          
-          usersecret['token'] = res.token;
-          usersecret['roles'] = res.roles;
-          usersecret['onboardingStage'] = parseInt(res.onboardingStage);
-          let enc = this.encriptionService.encrypt(usersecret);         
-          localStorage.setItem('access', enc);
-          
+          const usersecret: any = {};
+          usersecret.token = res.token;
+          usersecret.roles = res.roles;
+          usersecret.onboardingStage = parseInt(res.onboardingStage, 10);
+          this.storeService.saveAccessToken(usersecret);
           let routeType = null;
-          if(parseInt(res.onboardingStage) == 0){
+          if (parseInt(res.onboardingStage, 10) === 0) {
             routeType = res.roles.includes('admin') ? '/admin' : '/customer';
           } else {
-            routeType = "/onboard/" + OnBoardingRoutes[parseInt(res.onboardingStage) - 1];
+            routeType = '/onboard/' + OnBoardingRoutes[parseInt(res.onboardingStage, 10) - 1];
           }
           this.router.navigate([routeType]);
         }
@@ -156,7 +154,7 @@ export class LoginComponent implements OnInit {
           };
           this.socialUserSignin$(socialUser);
         } else {
-          this.user = new UserModel();
+          this.user = new User();
         }
       }
     });
@@ -169,12 +167,11 @@ export class LoginComponent implements OnInit {
     // });
   }
 
-  onKeyUp(type) {
+  onKeyUp(type): void {
     if ((type === 'username' && this.loginResponseType === 'invalidUser') ||
       (type === 'pass' && this.loginResponseType === 'incorrectPassword')) {
       this.loginResponseType = null;
     }
   }
-
 
 }

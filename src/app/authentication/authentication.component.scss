@@ -22,7 +22,7 @@
   min-height: 32vw;
   @media only screen and (min-width: 900px) {
     margin-right: 18vw;
-  }  
+  }
 
   @media only screen and (min-width: 700px) and (max-width: 900px) {
     max-width: 50vw;
@@ -124,7 +124,7 @@ input[type="password"] {
   margin: 0.3vw;
   font-weight: bold;
   font-size: 1.2vw;
-  
+
   @media only screen and (min-width: 600px) and (max-width: 850px) {
     font-size: 2.6vw;
   }
@@ -166,6 +166,7 @@ input[type="submit"] {
 }
 
 .update-path {
+  color: #007bff;
   font-weight: bold;
 }
 
@@ -265,15 +266,4 @@ input[type="submit"] {
   font-size: 1.4vw;
   font-weight: 900;
   color: #660715;
-}
-
-.error-text {
-  color: #fd1d1d;
-  font-size: 1vw;
-  margin-bottom: -1vw;
-  @media only screen and (max-width: 420px) {
-    font-size: 4.5vw;
-    padding: -1.5vw;
-    margin-bottom: -1.5vw;
-  }
 }

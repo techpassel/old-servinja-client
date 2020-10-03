@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from 'src/guard/auth.guard';
-import { CommonGuard } from "src/guard/common.guard";
+import { CommonGuard } from 'src/guard/common.guard';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },

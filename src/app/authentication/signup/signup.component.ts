@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {UserModel} from '../../../models/user.model';
+import {User} from '../../../models/user.model';
 import { Router } from '@angular/router';
 import {AuthenticationService} from '../../../services/authentication/authentication.service';
 
@@ -10,7 +10,7 @@ import {AuthenticationService} from '../../../services/authentication/authentica
   styleUrls: ['./signup.component.scss', '../authentication.component.scss']
 })
 export class SignupComponent implements OnInit {
-  user: UserModel = new UserModel();
+  user: User = new User();
   signupForm: FormGroup;
   submitted = false;
   isPasswordMismatched = false;

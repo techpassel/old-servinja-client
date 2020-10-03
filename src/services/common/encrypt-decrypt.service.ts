@@ -13,9 +13,10 @@ export class EncryptDecryptService {
     return CryptoJS.AES.encrypt(JSON.stringify(data), this.secretKey.trim()).toString();
   }
 
-  decrypt(textToDecrypt : string) {
-    const bytes = CryptoJS.AES.decrypt(textToDecrypt, this.secretKey.trim());
+  decrypt(encryptedText : string) {
+    const bytes = CryptoJS.AES.decrypt(encryptedText, this.secretKey.trim());
     const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
     return decryptedData;
   }
+
 }

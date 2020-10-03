@@ -6,6 +6,8 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { AuthGuard } from 'src/guard/auth.guard';
+import { ResendVerificationComponent } from './resend-verification/resend-verification.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,14 @@ const routes: Routes = [
       {
         path: 'verify-email/:token',
         component: VerifyEmailComponent,
+      },
+      {
+        path: 'forget-password',
+        component: ForgetPasswordComponent,
+      },
+      {
+        path: 'resend-verification-email',
+        component: ResendVerificationComponent,
       }
     ],
   },
