@@ -22,28 +22,7 @@
     border-radius: 10px !important;
 }
 
-.error-text {
-    color: #fd1d1d;
-    font-size: 1vw;
-    margin-bottom: -1vw;
-    @media only screen and (max-width: 420px) {
-        font-size: 4.5vw;
-        padding: -1.5vw;
-        margin-bottom: -1.5vw;
-    }
-}
-
-.validation-error {
-    color: #fd1d1d;
-    font-size: 1.1vw;
-    font-weight: bolder;
-    margin-bottom: -1vw;
-    @media only screen and (max-width: 420px) {
-        font-size: 4.5vw;
-        padding: -1.5vw;
-        margin-bottom: -1.5vw;
-    }
-}
-
 @import "./style-bootstrap.scss";
 @import "./style-common.scss";
+@import url('https://fonts.googleapis.com/css?family=Muli:300,400,600&display=swap');
+

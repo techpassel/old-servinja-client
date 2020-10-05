@@ -1,1 +1,30 @@
-<p>document works!</p>
+<div class="onboard-header">Please upload your Identity proof</div>
+<div class="container" appDnd (fileDropped)="onFileDropped($event)">
+    <input type="file" #fileDropRef id="fileDropRef" title="" multiple
+        (change)="fileBrowseHandler($event.target.files)" />
+    <img src="../../../assets/images/dnd/ic-upload-file.svg" alt="">
+    <h3>Drag and drop file here</h3>
+    <h3>or</h3>
+    <label for="fileDropRef">Browse for file</label>
+</div>
+<div class="files-list">
+    <div class="single-file" *ngFor="let file of files; let i = index">
+        <img src="../../../assets/images/dnd/ic-file.svg" width="45px" alt="file">
+        <div class="info">
+            <h4 class="name">
+                {{ file?.name }}
+            </h4>
+            <p class="size">
+                {{ formatBytes(file?.size) }}
+            </p>
+            <app-upload-progress [progress]="file?.progress"></app-upload-progress>
+        </div>
+        <img src="../../../assets/images/dnd/ic-delete-file.svg" class="delete" width="20px" alt="file"
+            (click)="deleteFile(i)">
+    </div>
+</div>
+<button class="btn btn-orange submit-margin" [disabled]="submitBtnStatus != 2"
+    [title]="submitBtnStatus ===0?'Please upload document first':submitBtnStatus ===1?'Please wait.Document is being uploaded':''"
+    (click)="submitDocument$()">{{submitBtnStatus != 3?'Upload':'Uploading...'}}</button>
+
+    

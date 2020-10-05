@@ -23,21 +23,6 @@ export class OnboardingService {
     return this.http.get(this.baseApiUrl + '/onboard/get-customer-details?userId=' + userId, { headers });
   }
 
-  updateOnboardingStage(userId = null, currentOnboardingStage = null): any {
-    if (!userId) {
-      userId = this.storeService.getUserId();
-    }
-    if (!currentOnboardingStage) {
-      currentOnboardingStage = this.storeService.getOnboardingStage();
-    }
-
-    let newOnboardingStage = currentOnboardingStage + 1;
-    if (currentOnboardingStage >= OnBoardingRoutes.length) {
-      newOnboardingStage = 0;
-    }
-    return this.http.post(this.baseApiUrl + '/onboard/update-onboarding-stage', { userId, newOnboardingStage }, { headers });
-  }
-
   saveProfileCompletionData(data: any): any {
     return this.http.post(this.baseApiUrl + '/onboard/save-profile-completion-data', data, { headers, responseType: 'text' });
   }

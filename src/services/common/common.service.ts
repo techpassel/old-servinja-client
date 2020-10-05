@@ -23,4 +23,8 @@ export class CommonService {
     getDefaultAddress(userId: number): any {
         return this.http.get(this.baseApiUrl + '/common/get-default-address/' + userId, { headers });
     }
+
+    storeUserDocuments(data): any {
+        return this.http.post(this.baseApiUrl + '/common/store-user-documents', data, { headers: { 'Access-Control-Allow-Origin': '*' }, responseType: 'text' });
+    }
 }

@@ -20,6 +20,8 @@
     "@angular/platform-browser-dynamic": "~10.0.9",
     "@angular/router": "~10.0.9",
     "@auth0/angular-jwt": "^5.0.1",
+    "@progress/kendo-angular-common": "^1.2.3",
+    "@progress/kendo-angular-popup": "^3.0.6",
     "angularx-social-login": "^3.2.1",
     "bootstrap": "^4.5.2",
     "crypto-js": "^4.0.0",

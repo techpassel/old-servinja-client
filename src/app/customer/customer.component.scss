@@ -1,0 +1,101 @@
+.comp-title {
+    background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+    border-radius: 10px;
+    padding: 5px 8px;
+    font-size: larger;
+    font-weight: 900;
+    color: #47030f !important;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-top: 55px !important;
+}
+
+.content {
+    padding: 20px 20px 20px 30px;
+    transition: all 0.5s;
+    background-color: rgba(16, 231, 220, 1);
+}
+
+.content-left-margin {
+    margin-left: 200px;
+}
+
+.cart-icon {
+    height: 40px;
+    width: 45px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.bell-icon {
+    height: 27px;
+    width: 27px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+#ex4 .p1[cart-count]:after {
+    position: absolute;
+    right: 28px;
+    top: 10%;
+    content: attr(cart-count);
+    font-size: 70%;
+    padding: 0.15em;
+    border-radius: 50%;
+    line-height: 1em;
+    color: white;
+    background: #ec0f0f;
+    text-align: center;
+    min-width: 1rem;
+}
+
+#ex4 .p1[notification-count]:after {
+    position: absolute;
+    right: 98px;
+    top: 10%;
+    content: attr(notification-count);
+    font-size: 70%;
+    padding: 0.15em;
+    border-radius: 50%;
+    line-height: 1em;
+    color: white;
+    background: #ec0f0f;
+    text-align: center;
+    min-width: 1rem;
+}
+
+.hide-count {
+    display: none;
+}
+
+.popup-content {
+    margin-top: 55px;
+    width: 350px;
+    min-height: 250px;
+    padding: 30px;
+    color: #ee0606;
+    background-color: #fcf7f8;
+    border: none;
+    // border: orangered solid 10px;
+    margin-right: 20px;
+    border-radius: 10px;
+    float: right;
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+

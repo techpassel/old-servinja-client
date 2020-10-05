@@ -898,3 +898,21 @@ export let StateAndDistrict = [
         ]
     }
 ];
+export enum DocTypes {
+    identityProof = 'IdentityProof',
+    addressProof = 'AddressProof',
+    other = 'Other'
+}
+export let SideNavLinks = {
+    admin: [
+        { name: 'Home', path: '/admin' }
+    ],
+    customer: [
+        { name: 'Home', path: '/customer' },
+        { name: 'Account', path: '/customer/account' },
+        { name: 'Subscriptions', path: '/customer/subscriptions' },
+        { name: 'Services', path: '/customer/services' },
+    ]
+};
+
+

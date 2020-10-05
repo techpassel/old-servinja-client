@@ -9,15 +9,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { AddressComponent } from './address/address.component';
 import { DocumentComponent } from './document/document.component';
+import { UploadProgressComponent } from '../common-views/upload-progress/upload-progress.component';
+import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
 
 @NgModule({
-  declarations: [OnboardingComponent, ProfileCompletionComponent, MobileVerificationComponent, AddressComponent, DocumentComponent],
+  declarations: [
+    OnboardingComponent,
+    ProfileCompletionComponent,
+    MobileVerificationComponent,
+    AddressComponent,
+    DocumentComponent,
+    UploadProgressComponent,
+    DragAndDropDirective
+  ],
   imports: [
     CommonModule,
     OnboardingRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgOtpInputModule
+    NgOtpInputModule,
   ]
 })
 export class OnboardingModule { }
