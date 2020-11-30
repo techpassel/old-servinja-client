@@ -12,8 +12,11 @@ export class MobileVerificationComponent implements OnInit {
   phone: string;
   otp: string;
   showOtpComponent = false;
+  lengthError = false;
   displayMessage = 'Do you want to update number? Please move to previous step.';
   isSendOtpBtnDisabled = false;
+  sendOtpProcessing = false;
+  verifyOtpProcessing = false;
   timeCount = 0;
   setIntervalObj: any;
   @Output() moveToNextStep = new EventEmitter();
@@ -41,6 +44,9 @@ export class MobileVerificationComponent implements OnInit {
 
   onOtpChange(otp): void {
     this.otp = otp;
+    if (this.otp.length === 6) {
+      this.lengthError = false;
+    }
   }
 
   getCustomerDetails$(): void {
@@ -60,6 +66,7 @@ export class MobileVerificationComponent implements OnInit {
 
   sendOtp$(): void {
     // It should be set true when otp is sent.
+    this.sendOtpProcessing = true;
     const data: any = {
       userId: this.storeService.getUserId(),
       phone: this.phone
@@ -71,10 +78,12 @@ export class MobileVerificationComponent implements OnInit {
           this.showOtpComponent = true;
           this.disableSendOtpBtn();
         } else {
-          this.notify.showError('Some error occured.Please try again');
+          this.notify.showError('Some error occured. Please try again');
         }
+        this.sendOtpProcessing = false;
       },
       (error) => {
+        this.sendOtpProcessing = false;
         console.log(error, 'error');
       }
     );
@@ -83,9 +92,9 @@ export class MobileVerificationComponent implements OnInit {
   disableSendOtpBtn(): void {
     this.isSendOtpBtnDisabled = true;
     this.timeCount = 180;
-    this.displayMessage = 'Otp has been sent to your registered mobile.You can resend OTP after ' + this.timeCount + (this.timeCount > 1 ? ' seconds.' : ' second.');
     this.setIntervalObj = setInterval(() => {
       if (this.timeCount > 0) {
+        this.displayMessage = 'Otp has been sent to your registered mobile.You can resend OTP after ' + this.timeCount + (this.timeCount > 1 ? ' seconds.' : ' second.');
         this.timeCount--;
       } else {
         this.displayMessage = 'Now you can resend OTP. Please move to previous step if you want to update number.';
@@ -97,6 +106,7 @@ export class MobileVerificationComponent implements OnInit {
 
   verifyOtp$(): void {
     if (this.otp.length === 6) {
+      this.verifyOtpProcessing = true;
       const data = {
         userId: this.storeService.getUserId(),
         token: this.otp
@@ -106,19 +116,21 @@ export class MobileVerificationComponent implements OnInit {
           if (response === 'success') {
             this.storeService.updateOnboardingStage(3);
             this.notify.showSuccess('Phone number verified successfully');
-            this.moveToNextStep.emit();
+            this.moveToNextStep.emit(3);
           } else if (response === 'invalid') {
             this.notify.showError('Your OTP is invalid or expired. Please try again.');
           } else {
             this.notify.showError('Some error occured. Please try again');
           }
+          this.verifyOtpProcessing = false;
         },
         (error) => {
-          console.log(error, 'error');
+          this.notify.showError('Some error occured. Please try again');
+          this.verifyOtpProcessing = false;
         }
       );
     } else {
-      this.notify.showError('Please enter 6 digit valid OTP');
+      this.lengthError = true;
     }
   }
 

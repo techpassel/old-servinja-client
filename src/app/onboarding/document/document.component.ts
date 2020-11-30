@@ -13,6 +13,7 @@ export class DocumentComponent implements OnInit {
   @ViewChild('fileDropRef', { static: false }) fileDropEl: ElementRef;
   files: any[] = [];
   submitBtnStatus = 0;
+  processing = false;
   @Output() moveToNextStep = new EventEmitter();
 
   constructor(
@@ -62,15 +63,19 @@ export class DocumentComponent implements OnInit {
       } else {
         this.submitBtnStatus = 1;
         const progressInterval = setInterval(() => {
-          if (this.files[index].progress === 100) {
+          if (this.files[index].progress >= 100) {
             clearInterval(progressInterval);
             this.uploadFilesSimulator(index + 1);
           } else {
-            this.files[index].progress += 5;
+            if (this.files[index].progress + 7 > 100) {
+              this.files[index].progress = 100;
+            } else {
+              this.files[index].progress += 7;
+            }
           }
         }, 100);
       }
-    }, 1000);
+    }, 500);
   }
 
   /**
@@ -101,7 +106,7 @@ export class DocumentComponent implements OnInit {
   }
 
   submitDocument$(): any {
-    console.log(this.files);
+    this.processing = true;
     const data: FormData = new FormData();
     this.files.forEach(file => {
       data.append('files', file);
@@ -110,17 +115,18 @@ export class DocumentComponent implements OnInit {
     data.append('docType', DocTypes.identityProof);
     this.commonService.storeUserDocuments(data).subscribe(
       (response) => {
-        console.log(response, 'response');
         if (response === 'success') {
           this.storeService.updateOnboardingStage(0);
           this.notify.showSuccess('Document saved successfully');
-          this.moveToNextStep.emit();
+          this.moveToNextStep.emit(0);
         } else {
           this.notify.showError('Some error occured. Please try again');
         }
+        this.processing = false;
       },
       (error) => {
-        console.log(error, 'error');
+        this.processing = false;
+        this.notify.showError('Some error occured. Please try again');
       }
     );
   }

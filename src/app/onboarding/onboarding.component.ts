@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { StoreService } from 'src/services/common/store.service';
-import { OnboardingService } from 'src/services/customer/onboarding.service';
 import { OnBoardingRoutes } from 'src/utils/common.util';
-import { NotificationUtil } from 'src/utils/notification.util';
 
 @Component({
   selector: 'app-onboarding',
@@ -11,11 +10,11 @@ import { NotificationUtil } from 'src/utils/notification.util';
   styleUrls: ['./onboarding.component.scss']
 })
 export class OnboardingComponent implements OnInit {
+  application = environment.application;
   onboardingStage: number;
   currentRouteIndex: number;
   nextProcessing = false;
   previousProcessing = false;
-  enableNext = false;
   constructor(
     private storeService: StoreService,
     private router: Router,
@@ -68,13 +67,12 @@ export class OnboardingComponent implements OnInit {
   onActivate(componentReference): void {
     // For parent-to-child - To trigger any function in child component.For example to trigger a function in child component by name 'anyFunction()'
     // componentReference.anyFunction();
-
     // For child-to-parent - To get data passed by triggering event from child component throw router-outlet
-    componentReference.onboardingStageUpdated?.subscribe((data: boolean) => {
-      this.enableNext = data;
-    });
-
-    componentReference.moveToNextStep?.subscribe(() => {
+    componentReference.moveToNextStep?.subscribe((desiredOnboardingStage) => {
+      if (this.onboardingStage < desiredOnboardingStage || desiredOnboardingStage === 0) {
+        this.storeService.updateOnboardingStage(desiredOnboardingStage);
+        this.onboardingStage = desiredOnboardingStage;
+      }
       this.navigateNext();
     });
   }

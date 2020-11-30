@@ -8,6 +8,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { ResendVerificationComponent } from './resend-verification/resend-verification.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -30,8 +31,12 @@ const routes: Routes = [
         component: ForgetPasswordComponent,
       },
       {
-        path: 'resend-verification-email',
+        path: 'resend-verification-email/:id',
         component: ResendVerificationComponent,
+      },
+      {
+        path: 'change-password/:token',
+        component: ChangePasswordComponent,
       }
     ],
   },

@@ -4,7 +4,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>First Name :</label>
-                <input type="text" class="form-control" (change)="valueUpdated()" placeholder="First Name"
+                <input type="text" class="form-control" placeholder="First Name"
                     formControlName="firstName">
                 <div *ngIf="submitted && f.firstName.errors" class="validation-error">
                     <div *ngIf="f.firstName.errors.required">First Name is required</div>
@@ -14,7 +14,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Last Name :</label>
-                <input type="text" class="form-control" (change)="valueUpdated()" placeholder="Last Name"
+                <input type="text" class="form-control" placeholder="Last Name"
                     formControlName="lastName">
                 <div *ngIf="submitted && f.lastName.errors" class="validation-error">
                     <div *ngIf="f.lastName.errors.required">Last Name is required</div>
@@ -33,14 +33,14 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Mobile Number :</label>
-                <input type="text" class="form-control" (change)="valueUpdated()" placeholder="Mobile Number"
+                <input type="text" class="form-control" placeholder="Mobile Number"
                     formControlName="phone">
                 <div *ngIf="submitted && f.phone.errors" class="validation-error">
                     <div *ngIf="f.phone.errors.required">Mobile Number is required</div>
                     <div *ngIf="f.phone.errors.maxlength || f.phone.errors.minlength">Mobile number must
                         contain 10 digits</div>
                 </div>
-                <div *ngIf="phoneExists">A user with this number already exists</div>
+                <div *ngIf="phoneExists" class="validation-error">A user with this number already exists</div>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Age :</label>
-                <input type="number" class="form-control" (change)="valueUpdated()" placeholder="Age"
+                <input type="number" class="form-control" placeholder="Age"
                     formControlName="age">
                 <div *ngIf="submitted && f.age.errors" class="validation-error">
                     <div *ngIf="f.age.errors.required">Age is required</div>

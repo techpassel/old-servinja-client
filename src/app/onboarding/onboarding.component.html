@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark fixed-top">
-    <a class="navbar-brand comp-title" routerLink="/">Servinja</a>
+    <a class="navbar-brand comp-title" routerLink="/">{{application}}</a>
     <ul class="navbar-nav font-weight-bold ml-auto">
         <li class="nav-item">
             <span class="nav-link signout-btn" (click)="signout()">Sign out</span>
@@ -12,7 +12,7 @@
             <router-outlet (activate)="onActivate($event)"></router-outlet>
             <div class="prev-next-btn">
                 <button class="btn btn-primary" (click)="navigateBack()" [disabled]="currentRouteIndex == 0 || previousProcessing" [title]="currentRouteIndex == 0?'This is the first page.':''">{{!previousProcessing?'Previous':'Processing...'}}</button>&nbsp;&nbsp;
-                <button class="btn btn-primary" (click)="navigateNext()" [disabled]="((currentRouteIndex+1) >= onboardingStage && !enableNext) || nextProcessing" [title]="(currentRouteIndex+1) >= onboardingStage && !enableNext?'Please complete current stage first to move to next stage.':''" >{{!nextProcessing?'Next':'Processing...'}}</button>
+                <button class="btn btn-primary" (click)="navigateNext()" [disabled]="((currentRouteIndex+1) >= onboardingStage) || nextProcessing" [title]="(currentRouteIndex+1) >= onboardingStage?'Please complete current stage first to move to next stage.':''" >{{!nextProcessing?'Next':'Processing...'}}</button>
             </div>
         </div>
     </div>

@@ -15,8 +15,6 @@ export class ProfileCompletionComponent implements OnInit {
   onboardingStage: number;
   submitted = false;
   phoneExists = false;
-  enableNext: boolean;
-  @Output() onboardingStageUpdated = new EventEmitter();
   @Output() moveToNextStep = new EventEmitter();
 
   constructor(
@@ -96,15 +94,6 @@ export class ProfileCompletionComponent implements OnInit {
   get f(): any { return this.profileCompletionForm.controls; }
 
   /**
-   * Called when any field value is updated.To enable or disable next button.
-   */
-  valueUpdated(): void {
-    if (this.enableNext && this.checkIfValuesModified()) {
-      this.onboardingStageUpdated.emit(false);
-    }
-  }
-
-  /**
    * To check if any value is changed from previous values
    */
   checkIfValuesModified(): boolean {
@@ -144,7 +133,7 @@ export class ProfileCompletionComponent implements OnInit {
       this.saveProfileCompletionData$();
     } else {
       // To navigate to next page
-      this.moveToNextStep.emit();
+      this.moveToNextStep.emit(2);
     }
   }
 
@@ -164,9 +153,8 @@ export class ProfileCompletionComponent implements OnInit {
         } else if (res === 'error') {
           this.notify.showError('Some error occured. Please try again');
         } else {
-          this.storeService.updateOnboardingStage(2);
           this.notify.showSuccess('Profile updated successfully');
-          this.moveToNextStep.emit();
+          this.moveToNextStep.emit(2);
         }
       },
       (error) => {

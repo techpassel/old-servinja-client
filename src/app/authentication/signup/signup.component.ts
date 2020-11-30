@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {User} from '../../../models/user.model';
+import { User } from '../../../models/user.model';
 import { Router } from '@angular/router';
-import {AuthenticationService} from '../../../services/authentication/authentication.service';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-signup',
@@ -43,12 +43,12 @@ export class SignupComponent implements OnInit {
   /**
    * Getter for easy access to form fields
    */
-  get f() { return this.signupForm.controls; }
+  get f(): any { return this.signupForm.controls; }
 
   /**
    * To hide error message instantly if it is being displayed after previous submission and user change the value.
    */
-  onKeyUp(type) {
+  onKeyUp(type): void {
     if (type === 'phone') { this.phoneExists = false; }
     if (type === 'email') { this.emailExists = false; }
     if (type === 'password') { this.isPasswordMismatched = false; }
@@ -57,15 +57,15 @@ export class SignupComponent implements OnInit {
   /**
    * Called on form submission.
    */
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
-    
+
     // return from here if form is invalid.
     if (this.signupForm.invalid) {
       return;
     }
 
-    //return from here if password and confirm password don't match.
+    // return from here if password and confirm password don't match.
     if (this.signupForm.value.password !== this.signupForm.value.confirmPassword) {
       this.isPasswordMismatched = true;
       return;

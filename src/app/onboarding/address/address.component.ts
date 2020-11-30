@@ -118,7 +118,7 @@ export class AddressComponent implements OnInit {
         if (response === 'success') {
           this.storeService.updateOnboardingStage(4);
           this.notify.showSuccess('Address saved successfully');
-          this.moveToNextStep.emit();
+          this.moveToNextStep.emit(4);
         } else {
           this.notify.showError('Some error occured. Please try again');
         }

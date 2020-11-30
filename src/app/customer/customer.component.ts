@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { LayoutService } from 'src/services/common/layout.service';
 
 @Component({
@@ -7,6 +8,7 @@ import { LayoutService } from 'src/services/common/layout.service';
   styleUrls: ['./customer.component.scss']
 })
 export class CustomerComponent implements OnInit {
+  application = environment.application;
   isSideNavHidden: boolean;
   cartIcon = '../../assets/images/cart1.png';
   bellIcon = '../../assets/images/bell.png';

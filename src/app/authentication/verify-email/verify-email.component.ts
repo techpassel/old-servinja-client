@@ -10,9 +10,9 @@ import { environment } from 'src/environments/environment';
 })
 export class VerifyEmailComponent implements OnInit {
   application = environment.application;
+  responseType: string = null;
 
   constructor(private activatedRouter: ActivatedRoute, private authenticationService: AuthenticationService) { }
-  responseType: string = null;
   ngOnInit(): void {
     this.getQueryParams$();
   }

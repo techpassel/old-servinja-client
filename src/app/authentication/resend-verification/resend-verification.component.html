@@ -1,1 +1,20 @@
-<p>resend-verification works!</p>
+<div>
+    <ng-container *ngIf="responseType == 'initialSending'; else responseTemplate">
+        <p>We are sending verification email. Please wait ...</p>
+    </ng-container>
+    <ng-template #responseTemplate>
+        <ng-container *ngIf="responseType == 'success'; else elseTemplate">
+            <p>A verification email has been sent to your registered email. It will be valid for next 24 hours. Please verify your email.</p>
+        </ng-container>
+        <ng-template #elseTemplate>
+            <ng-container *ngIf="responseType == 'invalidUser'; else nestedElseTemplate">
+                <p>User is invalid. Please signup again.</p>
+            </ng-container>
+            <ng-template #nestedElseTemplate>
+                <p class="validation-error" style="font-size: 16px;"><span class="light-text">Some error occured.</span> <span class="update-path"
+                        (click)="resendVerificationEmail$()">Click here</span><span class="light-text"> to try again.</span></p><br>
+            </ng-template>
+        </ng-template>
+    </ng-template>
+    <div><a class="update-path" routerLink="/login">Click here</a><span class="light-text"> to move to login page.</span></div>
+</div>
