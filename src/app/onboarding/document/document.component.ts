@@ -3,6 +3,7 @@ import { CommonService } from 'src/services/common/common.service';
 import { StoreService } from 'src/services/common/store.service';
 import { NotificationUtil } from 'src/utils/notification.util';
 import { DocTypes } from 'src/utils/common.util';
+import { LoaderService } from 'src/services/common/loader.service';
 
 @Component({
   selector: 'app-document',
@@ -13,13 +14,13 @@ export class DocumentComponent implements OnInit {
   @ViewChild('fileDropRef', { static: false }) fileDropEl: ElementRef;
   files: any[] = [];
   submitBtnStatus = 0;
-  processing = false;
   @Output() moveToNextStep = new EventEmitter();
 
   constructor(
     private storeService: StoreService,
     private commonService: CommonService,
-    private notify: NotificationUtil
+    private notify: NotificationUtil,
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -106,7 +107,7 @@ export class DocumentComponent implements OnInit {
   }
 
   submitDocument$(): any {
-    this.processing = true;
+    this.loaderService.startLoader('Uploading.Please wait...');
     const data: FormData = new FormData();
     this.files.forEach(file => {
       data.append('files', file);
@@ -115,6 +116,7 @@ export class DocumentComponent implements OnInit {
     data.append('docType', DocTypes.identityProof);
     this.commonService.storeUserDocuments(data).subscribe(
       (response) => {
+        this.loaderService.stopLoader();
         if (response === 'success') {
           this.storeService.updateOnboardingStage(0);
           this.notify.showSuccess('Document saved successfully');
@@ -122,10 +124,9 @@ export class DocumentComponent implements OnInit {
         } else {
           this.notify.showError('Some error occured. Please try again');
         }
-        this.processing = false;
       },
       (error) => {
-        this.processing = false;
+        this.loaderService.stopLoader();
         this.notify.showError('Some error occured. Please try again');
       }
     );

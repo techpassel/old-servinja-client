@@ -35,7 +35,7 @@ export class SideNavComponent implements OnInit {
   }
 
   getSideNavStatus(): void {
-    const sub: any = this.layoutService.hideSideNav.subscribe((val) => {
+    this.layoutService.hideSideNav.subscribe((val) => {
       this.isSideNavHidden = val;
     });
   }

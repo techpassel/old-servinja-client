@@ -5,6 +5,7 @@ import { NotificationUtil } from 'src/utils/notification.util';
 import { OnBoardingRoutes, StateAndDistrict } from 'src/utils/common.util';
 import { Address } from '../../../models/address.model';
 import { CommonService } from '../../../services/common/common.service';
+import { LoaderService } from 'src/services/common/loader.service';
 
 @Component({
   selector: 'app-address',
@@ -24,7 +25,8 @@ export class AddressComponent implements OnInit {
     private commonService: CommonService,
     private formBuilder: FormBuilder,
     private storeService: StoreService,
-    private notify: NotificationUtil
+    private notify: NotificationUtil,
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -54,9 +56,11 @@ export class AddressComponent implements OnInit {
    */
   getAddress$(): void {
     const userId = this.storeService.getUserId();
+    this.loaderService.startLoader('Loading.Please wait...');
     this.commonService.getDefaultAddress(userId).subscribe(
       (response) => {
         const res: any = response;
+        this.loaderService.stopLoader();
         if (res.status === 'success') {
           const adr: any = res.address;
           delete adr.user;
@@ -69,6 +73,7 @@ export class AddressComponent implements OnInit {
         }
       },
       (error) => {
+        this.loaderService.stopLoader();
         console.log(error, 'error');
       });
   }
@@ -112,9 +117,10 @@ export class AddressComponent implements OnInit {
       userId: this.storeService.getUserId()
     };
     delete adrObj.address.userId;
-
+    this.loaderService.startLoader('Saving.Please wait...');
     this.commonService.saveAddress(adrObj).subscribe(
       (response) => {
+        this.loaderService.stopLoader();
         if (response === 'success') {
           this.storeService.updateOnboardingStage(4);
           this.notify.showSuccess('Address saved successfully');
@@ -124,6 +130,7 @@ export class AddressComponent implements OnInit {
         }
       },
       (error) => {
+        this.loaderService.stopLoader();
         console.log(error, 'error');
       }
     );

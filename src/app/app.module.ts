@@ -11,10 +11,15 @@ import { AdminGuard } from 'src/guard/admin.guard';
 import { HttpGlobalInterceptorService } from 'src/utils/http-global-interceptor.util';
 import { EncryptDecryptService } from 'src/services/common/encrypt-decrypt.service';
 import { CommonGuard } from 'src/guard/common.guard';
-import { OnboardGuard} from 'src/guard/onboard.guard';
+import { OnboardGuard } from 'src/guard/onboard.guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgOtpInputModule } from 'ng-otp-input';
+import {
+  NgxUiLoaderModule,
+  NgxUiLoaderConfig,
+  SPINNER
+} from 'ngx-ui-loader';
 
 export function tokenGetter(): string {
   let token = null;
@@ -25,6 +30,15 @@ export function tokenGetter(): string {
   }
   return token;
 }
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  hasProgressBar: false,
+  fgsColor: '#1500b3',
+  fgsType: SPINNER.threeStrings,
+  fgsSize: 80,
+  gap: 30,
+  overlayColor: 'rgba(27, 103, 224, 0.4)'
+};
 
 @NgModule({
   declarations: [
@@ -49,7 +63,7 @@ export function tokenGetter(): string {
       enableHtml: true,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
-      iconClasses:  {
+      iconClasses: {
         error: 'toast-error',
         info: 'toast-info',
         success: 'toast-success',
@@ -57,6 +71,7 @@ export function tokenGetter(): string {
       }
     }),
     NgOtpInputModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
   providers: [AuthGuard,
     AdminGuard,

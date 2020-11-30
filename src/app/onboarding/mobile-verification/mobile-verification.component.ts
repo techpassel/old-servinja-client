@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { LoaderService } from 'src/services/common/loader.service';
 import { StoreService } from 'src/services/common/store.service';
 import { OnboardingService } from 'src/services/customer/onboarding.service';
 import { NotificationUtil } from 'src/utils/notification.util';
@@ -15,8 +16,6 @@ export class MobileVerificationComponent implements OnInit {
   lengthError = false;
   displayMessage = 'Do you want to update number? Please move to previous step.';
   isSendOtpBtnDisabled = false;
-  sendOtpProcessing = false;
-  verifyOtpProcessing = false;
   timeCount = 0;
   setIntervalObj: any;
   @Output() moveToNextStep = new EventEmitter();
@@ -35,7 +34,8 @@ export class MobileVerificationComponent implements OnInit {
   constructor(
     private onboardingService: OnboardingService,
     private storeService: StoreService,
-    private notify: NotificationUtil
+    private notify: NotificationUtil,
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -65,14 +65,14 @@ export class MobileVerificationComponent implements OnInit {
   }
 
   sendOtp$(): void {
-    // It should be set true when otp is sent.
-    this.sendOtpProcessing = true;
+    this.loaderService.startLoader('Sending.Please wait...');
     const data: any = {
       userId: this.storeService.getUserId(),
       phone: this.phone
     };
     this.onboardingService.sendOtp(data).subscribe(
       (response) => {
+        this.loaderService.stopLoader();
         if (response === 'success') {
           this.notify.showSuccess('OTP has been sent to your registered mobile.Please verify');
           this.showOtpComponent = true;
@@ -80,10 +80,9 @@ export class MobileVerificationComponent implements OnInit {
         } else {
           this.notify.showError('Some error occured. Please try again');
         }
-        this.sendOtpProcessing = false;
       },
       (error) => {
-        this.sendOtpProcessing = false;
+        this.loaderService.stopLoader();
         console.log(error, 'error');
       }
     );
@@ -106,27 +105,27 @@ export class MobileVerificationComponent implements OnInit {
 
   verifyOtp$(): void {
     if (this.otp.length === 6) {
-      this.verifyOtpProcessing = true;
+      this.loaderService.startLoader('Verifying.Please wait...');
       const data = {
         userId: this.storeService.getUserId(),
         token: this.otp
       };
       this.onboardingService.verifyOtp(data).subscribe(
         (response) => {
+          this.loaderService.stopLoader();
           if (response === 'success') {
             this.storeService.updateOnboardingStage(3);
-            this.notify.showSuccess('Phone number verified successfully');
+            this.notify.showSuccess('Phone number is verified successfully');
             this.moveToNextStep.emit(3);
           } else if (response === 'invalid') {
             this.notify.showError('Your OTP is invalid or expired. Please try again.');
           } else {
             this.notify.showError('Some error occured. Please try again');
           }
-          this.verifyOtpProcessing = false;
         },
         (error) => {
+          this.loaderService.stopLoader();
           this.notify.showError('Some error occured. Please try again');
-          this.verifyOtpProcessing = false;
         }
       );
     } else {

@@ -3,7 +3,7 @@
     <div style="text-align: center;">
         Your Number : <input type="text" [(ngModel)]="phone" disabled
             style="width: 110px; border-radius: 5px; padding: 5px;"> &nbsp;&nbsp;
-        <button class="btn btn-success" (click)="sendOtp$()" [disabled]="isSendOtpBtnDisabled || sendOtpProcessing">{{sendOtpProcessing?'Sending...':'Send OTP'}}</button>
+        <button class="btn btn-success" (click)="sendOtp$()" [disabled]="isSendOtpBtnDisabled">Send OTP</button>
         <div class="validation-error">{{displayMessage}}</div>
 
         <div *ngIf="showOtpComponent">
@@ -13,7 +13,7 @@
             </ng-otp-input>
             <p class="validation-error" *ngIf="lengthError">Otp must contain six digits.</p>
             <br>
-            <button class="btn btn-orange" (click)="verifyOtp$()" [disabled]="verifyOtpProcessing">{{verifyOtpProcessing?'Verifying...':'Verify OTP'}}</button>
+            <button class="btn btn-orange" (click)="verifyOtp$()">Verify OTP</button>
         </div>
     </div>
 </div>

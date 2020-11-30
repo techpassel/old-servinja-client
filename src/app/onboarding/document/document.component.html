@@ -23,8 +23,7 @@
             (click)="deleteFile(i)">
     </div>
 </div>
-<button class="btn btn-orange submit-margin" [disabled]="submitBtnStatus != 2 || processing"
-    [title]="submitBtnStatus ===0?'Please upload document first':submitBtnStatus ===1?'Please wait.Document is being uploaded':''"
-    (click)="submitDocument$()">{{!processing?'Upload':'Uploading...'}}</button>
-
-    
+<button class="btn btn-orange submit-margin" [disabled]="submitBtnStatus != 2"
+    [title]="submitBtnStatus === 0?'Please upload document first':submitBtnStatus === 1?'Please wait.Document is being uploaded':''"
+    (click)="submitDocument$()">Upload
+</button>

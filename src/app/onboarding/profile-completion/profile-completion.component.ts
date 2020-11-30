@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'src/services/common/loader.service';
 import { StoreService } from 'src/services/common/store.service';
 import { OnboardingService } from 'src/services/customer/onboarding.service';
 import { NotificationUtil } from 'src/utils/notification.util';
@@ -21,7 +22,8 @@ export class ProfileCompletionComponent implements OnInit {
     private onboardingService: OnboardingService,
     private formBuilder: FormBuilder,
     private storeService: StoreService,
-    private notify: NotificationUtil
+    private notify: NotificationUtil,
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -34,8 +36,10 @@ export class ProfileCompletionComponent implements OnInit {
    */
   getCustomerDetails$(): void {
     const userId: number = this.storeService.getUserId();
+    this.loaderService.startLoader('Loading.Please wait...');
     this.onboardingService.getCustomerDetails(userId).subscribe(
       (response) => {
+        this.loaderService.stopLoader();
         const res: any = response;
         if (res.type === 'success') {
           const requiredKeys = ['firstName', 'lastName', 'email', 'phone', 'age', 'gender'];
@@ -69,6 +73,7 @@ export class ProfileCompletionComponent implements OnInit {
         }
       },
       (error) => {
+        this.loaderService.stopLoader();
         console.log(error, 'error');
       }
     );
@@ -143,9 +148,11 @@ export class ProfileCompletionComponent implements OnInit {
   saveProfileCompletionData$(): any {
     const user = this.getInputValues();
     user.id = this.userDetails?.id;
+    this.loaderService.startLoader('Saving.Please wait...');
     this.onboardingService.saveProfileCompletionData(user).subscribe(
       (response) => {
         const res: string = response;
+        this.loaderService.stopLoader();
         if (res === 'duplicatePhone') {
           this.phoneExists = true;
           this.notify.showError('Phone number is already registered.Please provide some other number');
@@ -158,6 +165,7 @@ export class ProfileCompletionComponent implements OnInit {
         }
       },
       (error) => {
+        this.loaderService.stopLoader();
         console.log(error, 'error');
       }
     );
