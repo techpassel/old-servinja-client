@@ -64,7 +64,7 @@ export class ProfileCompletionComponent implements OnInit {
           });
           this.onboardingStage = res.customer.onboardingStage;
           this.userDetails = user;
-          this.userDetails.id = res.customer.id;
+          this.userDetails.userId = res.customer?.user?.id;
           // To set values of all fileds in reactive form
           this.profileCompletionForm.patchValue(user);
           // If you have all values then you can use setValue() also in place of patchValue().
@@ -147,7 +147,7 @@ export class ProfileCompletionComponent implements OnInit {
    */
   saveProfileCompletionData$(): any {
     const user = this.getInputValues();
-    user.id = this.userDetails?.id;
+    user.id = this.userDetails?.userId;
     this.loaderService.startLoader('Saving.Please wait...');
     this.onboardingService.saveProfileCompletionData(user).subscribe(
       (response) => {
