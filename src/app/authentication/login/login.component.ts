@@ -7,6 +7,7 @@ import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthService } from 'a
 import { OnBoardingRoutes } from 'src/utils/common.util';
 import { StoreService } from 'src/services/common/store.service';
 import { NotificationUtil } from 'src/utils/notification.util';
+import { CommonService } from 'src/services/common/common.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private router: Router,
     private storeService: StoreService,
-    private notify: NotificationUtil
+    private notify: NotificationUtil,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
@@ -158,8 +160,8 @@ export class LoginComponent implements OnInit {
     this.authService.authState.subscribe(user => {
       if (user) {
         const socialUser: any = {
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: this.commonService.capitalizeFirstLetter(user.firstName),
+          lastName: this.commonService.capitalizeFirstLetter(user.lastName),
           email: user.email
         };
         this.socialUserSignin$(socialUser);

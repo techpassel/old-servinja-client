@@ -7,8 +7,6 @@ import { LayoutService } from '../../../services/common/layout.service';
   styleUrls: ['./side-nav-toggler.component.scss']
 })
 export class SideNavTogglerComponent implements OnInit {
-  // @Output()
-  // sideNavToggeled = new EventEmitter();
 
   constructor(public layoutService: LayoutService) { }
 
@@ -20,7 +18,6 @@ export class SideNavTogglerComponent implements OnInit {
 
   toggleSideNav(): void {
     this.layoutService.toggleSideNav();
-    // this.sideNavToggeled.emit();
   }
 
 }

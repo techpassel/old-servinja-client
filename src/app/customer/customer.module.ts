@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
-import { SideNavTogglerComponent } from '../common-views/side-nav-toggler/side-nav-toggler.component';
-import { SideNavComponent } from '../common-views/side-nav/side-nav.component';
 import { HomeComponent } from './home/home.component';
-import { PopupModule } from '@progress/kendo-angular-popup';
+import { CommonViewsModule } from '../common-views/common-views.module';
+import { ServicesComponent } from './services/services.component';
+import { AccountComponent } from './account/account.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
-  declarations: [CustomerComponent, SideNavTogglerComponent, SideNavComponent, HomeComponent],
+  declarations: [CustomerComponent, HomeComponent, ServicesComponent, AccountComponent, SubscriptionsComponent, CartComponent],
   imports: [
     CommonModule,
     CustomerRoutingModule,
-    PopupModule
+    CommonViewsModule
   ]
 })
 export class CustomerModule { }

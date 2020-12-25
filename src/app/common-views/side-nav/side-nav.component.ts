@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { throwError, of } from 'rxjs';
+import { mergeMap, retry } from 'rxjs/operators';
+import { CommonService } from 'src/services/common/common.service';
 import { LayoutService } from 'src/services/common/layout.service';
 import { StoreService } from 'src/services/common/store.service';
 import { SideNavLinks } from 'src/utils/common.util';
@@ -14,24 +17,58 @@ export class SideNavComponent implements OnInit {
   sideNavItems: Array<any>;
   menImage = '../../../assets/images/men.png';
   womenImage = '../../../assets/images/women.png';
+  gender: string;
   userName: string;
+  mainRole: string;
+
   constructor(
     public layoutService: LayoutService,
     public storeService: StoreService,
-    public router: Router
+    public router: Router,
+    public commonService: CommonService
   ) { }
 
   ngOnInit(): void {
+    const userRoles = this.storeService.getUserRoles();
+    this.mainRole = userRoles.includes('admin') ? 'admin' : userRoles;
     this.getSideNavStatus();
     this.setSideNavItems();
-    // Temporary.Should be changed with original user name.
-    this.userName = 'Aman Saurabh';
+    this.getUserNameAndGender();
+  }
+
+  getUserNameAndGender(): void {
+    if (this.mainRole === 'admin') {
+      this.userName = 'Admin';
+      this.gender = 'male';
+    } else {
+      const userId: any = this.storeService.getUserId();
+      // To retry if first request fails.
+      const request = this.commonService.getUserNameAndGender(userId).pipe(
+        mergeMap(value => {
+          const val: any = value;
+          if (val.type !== 'success') {
+            return throwError('Error!');
+          }
+          return of(val);
+        }),
+        retry(1)
+      );
+
+      request.subscribe({
+        next: val => {
+          const res: any = val;
+          if (res.type === 'success') {
+            this.userName = res.lastName ? this.commonService.capitalizeFirstLetter(res.firstName) + ' ' + this.commonService.capitalizeFirstLetter(res.lastName) : this.commonService.capitalizeFirstLetter(res.firstName);
+            this.gender = res.gender;
+          }
+        },
+        error: val => console.log(`${val}: Retried 2 times then quit!`)
+      });
+    }
   }
 
   setSideNavItems(): void {
-    const userRoles = this.storeService.getUserRoles();
-    const mainRole = userRoles.includes('admin') ? 'admin' : userRoles;
-    this.sideNavItems = SideNavLinks[mainRole];
+    this.sideNavItems = SideNavLinks[this.mainRole];
   }
 
   getSideNavStatus(): void {
@@ -52,6 +89,5 @@ export class SideNavComponent implements OnInit {
   signout(): any {
     this.storeService.logout();
   }
-
 
 }

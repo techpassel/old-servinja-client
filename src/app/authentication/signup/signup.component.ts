@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../models/user.model';
-import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
+import { CommonService } from 'src/services/common/common.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +20,11 @@ export class SignupComponent implements OnInit {
   isProcessing = false;
   errorInResponse = false;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private authenticationService: AuthenticationService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private authenticationService: AuthenticationService,
+    private commonService: CommonService
+  ) { }
 
   ngOnInit(): void {
     this.initializeSignupForm();
@@ -71,8 +75,8 @@ export class SignupComponent implements OnInit {
       return;
     }
     this.isProcessing = true;
-    this.user.firstName = this.signupForm.value.firstName;
-    this.user.lastName = this.signupForm.value.lastName;
+    this.user.firstName = this.commonService.capitalizeFirstLetter(this.signupForm.value.firstName);
+    this.user.lastName = this.commonService.capitalizeFirstLetter(this.signupForm.value.lastName);
     this.user.email = this.signupForm.value.email;
     this.user.phone = this.signupForm.value.contactNumber;
     this.user.password = this.signupForm.value.password;

@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark fixed-top">
+    <app-side-nav-toggler></app-side-nav-toggler>
+    <a class="navbar-brand comp-title" routerLink="/">{{application}}</a>
+    <ul class="navbar-nav font-weight-bold ml-auto">
+        <li class="nav-item">
+            <div id="ex4">
+                <span class="p1 fa-stack fa-2x has-badge" [attr.notification-count]="notificationCount" #anchor
+                    [ngClass]="{'hide-count': notificationCount == 0 }"></span>
+                <img [src]="bellIcon" class="bell-icon" (click)="show = !show">
+                <span class="p1 fa-stack fa-2x has-badge" [attr.cart-count]="cartItemCount"
+                    [ngClass]="{'hide-count': cartItemCount == 0 }"></span>
+                <img [src]="cartIcon" class="cart-icon" (click)="showCart()">
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<div class="wrapper">
+    <app-side-nav></app-side-nav>
+    <div class="content" [ngClass]="{'content-left-margin': !isSideNavHidden }">
+        <div id="overlay" [ngStyle]="{'display': show?'block':'none'}" (click)="hideOverlay($event)">
+            <kendo-popup *ngIf="show">
+                <div class="popup-content" id="notification-popup">
+                    <!-- User-defined content -->
+                    <button class="btn btn-success" (click)="test()">Test</button>
+                    Popup content.
+                </div>
+            </kendo-popup>
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+</div>

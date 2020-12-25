@@ -905,13 +905,15 @@ export enum DocTypes {
 }
 export let SideNavLinks = {
     admin: [
-        { name: 'Home', path: '/admin' }
+        { name: 'Home', path: '/admin' },
+        { name: 'Categories', path: '/admin/categories' },
+        { name: 'Services', path: '/admin/services' }
     ],
     customer: [
         { name: 'Home', path: '/customer' },
         { name: 'Account', path: '/customer/account' },
         { name: 'Subscriptions', path: '/customer/subscriptions' },
-        { name: 'Services', path: '/customer/services' },
+        { name: 'Services', path: '/customer/services' }
     ]
 };
 

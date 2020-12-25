@@ -6,7 +6,7 @@
         </li>
     </ul>
     <div class="bottom-content">
-        <img [src]="menImage" class="gender-image">
+        <img [src]="gender=='male'?menImage:womenImage" class="gender-image">
         <p>{{userName}}</p>
         <span class="nav-link sidenav-signout" (click)="signout()">Sign out</span>
     </div>

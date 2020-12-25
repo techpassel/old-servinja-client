@@ -10,13 +10,16 @@
 .wrapper {
     display: flex;
     flex-direction: row;
-    margin-top: 55px !important;
+    margin-top: 54px !important;
+    background-color: rgba(16, 231, 220, 1);
+    background-size: cover;
+    min-height: 91.5vh;
 }
 
 .content {
     padding: 20px 20px 20px 30px;
     transition: all 0.5s;
-    background-color: rgba(16, 231, 220, 1);
+    background-position: 50% 50%;
 }
 
 .content-left-margin {
@@ -24,23 +27,23 @@
 }
 
 .cart-icon {
-    height: 40px;
-    width: 45px;
+    height: 28px;
+    width: 32px;
     margin-right: 20px;
     cursor: pointer;
 }
 
 .bell-icon {
-    height: 27px;
-    width: 27px;
+    height: 21px;
+    width: 21px;
     margin-right: 20px;
     cursor: pointer;
 }
 
 #ex4 .p1[cart-count]:after {
     position: absolute;
-    right: 28px;
-    top: 10%;
+    right: 30px;
+    top: 15%;
     content: attr(cart-count);
     font-size: 70%;
     padding: 0.15em;
@@ -54,8 +57,8 @@
 
 #ex4 .p1[notification-count]:after {
     position: absolute;
-    right: 98px;
-    top: 10%;
+    right: 85px;
+    top: 15%;
     content: attr(notification-count);
     font-size: 70%;
     padding: 0.15em;
@@ -98,4 +101,3 @@
     z-index: 2;
     cursor: pointer;
 }
-
