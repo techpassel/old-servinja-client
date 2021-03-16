@@ -8,7 +8,10 @@ import { NotificationUtil } from 'src/utils/notification.util';
 @Component({
   selector: 'app-profile-completion',
   templateUrl: './profile-completion.component.html',
-  styleUrls: ['./profile-completion.component.scss', '../onboarding.component.scss']
+  styleUrls: [
+    './profile-completion.component.scss',
+    '../onboarding.component.scss',
+  ],
 })
 export class ProfileCompletionComponent implements OnInit {
   profileCompletionForm: FormGroup;
@@ -24,7 +27,7 @@ export class ProfileCompletionComponent implements OnInit {
     private storeService: StoreService,
     private notify: NotificationUtil,
     private loaderService: LoaderService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getCustomerDetails$();
@@ -42,19 +45,25 @@ export class ProfileCompletionComponent implements OnInit {
         this.loaderService.stopLoader();
         const res: any = response;
         if (res.type === 'success') {
-          const requiredKeys = ['firstName', 'lastName', 'email', 'phone', 'age', 'gender'];
+          const requiredKeys = [
+            'firstName',
+            'lastName',
+            'email',
+            'phone',
+            'age',
+            'gender',
+          ];
           const user: any = {};
           let incompleteCount = 0;
 
-          requiredKeys.forEach(e => {
+          requiredKeys.forEach((e) => {
             if (res.customer?.hasOwnProperty(e)) {
               if (res.customer[e] && res.customer[e] !== '') {
                 user[e] = res.customer[e];
               } else {
                 incompleteCount++;
               }
-            }
-            else if (res.customer?.user?.hasOwnProperty(e)) {
+            } else if (res.customer?.user?.hasOwnProperty(e)) {
               if (res.customer.user[e] && res.customer.user[e] !== '') {
                 user[e] = res.customer.user[e];
               } else {
@@ -69,7 +78,9 @@ export class ProfileCompletionComponent implements OnInit {
           this.profileCompletionForm.patchValue(user);
           // If you have all values then you can use setValue() also in place of patchValue().
         } else {
-          this.notify.showWarning('User details not found. Please fill all details.');
+          this.notify.showWarning(
+            'User details not found. Please fill all details.'
+          );
         }
       },
       (error) => {
@@ -86,17 +97,31 @@ export class ProfileCompletionComponent implements OnInit {
     this.profileCompletionForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.compose([Validators.minLength(10), Validators.maxLength(10)])]],
+      email: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.email],
+      ],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.compose([
+            Validators.minLength(10),
+            Validators.maxLength(10),
+          ]),
+        ],
+      ],
       age: ['', Validators.required],
-      gender: ['', Validators.required]
+      gender: ['', Validators.required],
     });
   }
 
   /**
    * Getter for easy access to form fields
    */
-  get f(): any { return this.profileCompletionForm.controls; }
+  get f(): any {
+    return this.profileCompletionForm.controls;
+  }
 
   /**
    * To check if any value is changed from previous values
@@ -121,7 +146,7 @@ export class ProfileCompletionComponent implements OnInit {
       lastName: this.profileCompletionForm.value.lastName,
       phone: this.profileCompletionForm.value.phone,
       age: this.profileCompletionForm.value.age,
-      gender: this.profileCompletionForm.value.gender
+      gender: this.profileCompletionForm.value.gender,
     };
   }
   /**
@@ -155,7 +180,9 @@ export class ProfileCompletionComponent implements OnInit {
         this.loaderService.stopLoader();
         if (res === 'duplicatePhone') {
           this.phoneExists = true;
-          this.notify.showError('Phone number is already registered.Please provide some other number');
+          this.notify.showError(
+            'Phone number is already registered.Please provide some other number'
+          );
           return;
         } else if (res === 'error') {
           this.notify.showError('Some error occured. Please try again');
@@ -170,5 +197,4 @@ export class ProfileCompletionComponent implements OnInit {
       }
     );
   }
-
 }
