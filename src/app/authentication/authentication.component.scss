@@ -13,7 +13,7 @@
 
 .wrap {
   border-radius: 20px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   box-sizing: border-box;
   padding: 25px;
   color: #fff;
@@ -22,7 +22,7 @@
   min-height: 32vw;
   @media only screen and (min-width: 900px) {
     margin-right: 18vw;
-  }  
+  }
 
   @media only screen and (min-width: 700px) and (max-width: 900px) {
     max-width: 50vw;
@@ -86,7 +86,7 @@
 }
 
 /* If you want the content centered horizontally and vertically */
-.centered {
+.all-centered {
   position: absolute;
   top: 50%;
   width: 100%;
@@ -97,6 +97,8 @@
 }
 
 h2 {
+  color: #1500b3;
+  font-weight: 600;
   text-align: center;
   font-size: 3vw;
   @media only screen and (min-width: 600px) and (max-width: 850px) {
@@ -108,6 +110,36 @@ h2 {
   @media only screen and (max-width: 420px) {
     font-size: 7vw;
   }
+}
+
+h3 {
+  color: #1500b3;
+  font-weight: bolder;
+  text-align: center;
+  font-size: 2.3vw;
+  @media only screen and (min-width: 600px) and (max-width: 850px) {
+    font-size: 3.5vw;
+  }
+  @media only screen and (min-width: 420px) and (max-width: 600px) {
+    font-size: 4.5vw;
+  }
+  @media only screen and (max-width: 420px) {
+    font-size: 6vw;
+  }
+}
+
+label {
+  opacity: 0.8;
+  margin-left: 8px;
+  margin-top: 8px;
+}
+
+.margin-left {
+  margin-left: 8px;
+}
+
+p {
+  opacity: 0.8;
 }
 
 input[type="text"],
@@ -124,7 +156,8 @@ input[type="password"] {
   margin: 0.3vw;
   font-weight: bold;
   font-size: 1.2vw;
-  
+  opacity: 0.8;
+
   @media only screen and (min-width: 600px) and (max-width: 850px) {
     font-size: 2.6vw;
   }
@@ -145,7 +178,7 @@ input[type="submit"] {
   margin-bottom: 0.8vw;
   outline: none;
   border: none;
-  background: #3e32a8;
+  background: #1500b3;
   opacity: 0.7;
   border-radius: 20px;
   font-size: 1.5vw;
@@ -166,12 +199,18 @@ input[type="submit"] {
 }
 
 .update-path {
-  font-weight: bold;
+  color: #1500b3;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.update-path:hover {
+  text-decoration: underline;
 }
 
 .redirect-link {
-  color: #007bff;
-  font-weight: bold;
+  color: #1500b3;
+  font-weight: bolder;
   font-size: 1.15vw;
   cursor: pointer;
   @media only screen and (min-width: 600px) and (max-width: 850px) {
@@ -185,8 +224,15 @@ input[type="submit"] {
   }
 }
 
-.update-path-container {
+.centered {
   text-align: center;
+}
+
+.light-text {
+  opacity: 0.8;
+}
+
+.update-path-container {
   font-size: 1.15vw;
   @media only screen and (min-width: 600px) and (max-width: 850px) {
     font-size: 2.3vw;
@@ -200,8 +246,8 @@ input[type="submit"] {
 }
 
 .function-link {
-  color: #007bff;
-  font-weight: bold;
+  color: #1500b3;
+  font-weight: bolder;
   cursor: pointer;
   font-size: 1.15vw;
 }
@@ -220,7 +266,7 @@ input[type="submit"] {
   background: #fff;
   opacity: 0.85;
   border-radius: 25px;
-  font-size: 1.4vw;
+  font-size: 1.25vw;
   font-weight: bold;
   @media only screen and (min-width: 600px) and (max-width: 850px) {
     font-size: 2.3vw;
@@ -265,15 +311,4 @@ input[type="submit"] {
   font-size: 1.4vw;
   font-weight: 900;
   color: #660715;
-}
-
-.error-text {
-  color: #fd1d1d;
-  font-size: 1vw;
-  margin-bottom: -1vw;
-  @media only screen and (max-width: 420px) {
-    font-size: 4.5vw;
-    padding: -1.5vw;
-    margin-bottom: -1.5vw;
-  }
 }

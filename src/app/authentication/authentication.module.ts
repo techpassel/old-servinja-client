@@ -9,10 +9,13 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
 import { environment } from 'src/environments/environment';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { ResendVerificationComponent } from './resend-verification/resend-verification.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
-  declarations: [AuthenticationComponent, LoginComponent, SignupComponent, VerifyEmailComponent],
+  declarations: [AuthenticationComponent, LoginComponent, SignupComponent, VerifyEmailComponent, ForgetPasswordComponent, ResendVerificationComponent, ChangePasswordComponent],
   imports: [
     CommonModule,
     AuthenticationRoutingModule,

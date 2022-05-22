@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {UserModel} from '../../../models/user.model';
-import { Router } from '@angular/router';
-import {AuthenticationService} from '../../../services/authentication/authentication.service';
+import { User } from '../../../models/user.model';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
+import { CommonService } from 'src/services/common/common.service';
 
 @Component({
   selector: 'app-signup',
@@ -10,7 +10,7 @@ import {AuthenticationService} from '../../../services/authentication/authentica
   styleUrls: ['./signup.component.scss', '../authentication.component.scss']
 })
 export class SignupComponent implements OnInit {
-  user: UserModel = new UserModel();
+  user: User = new User();
   signupForm: FormGroup;
   submitted = false;
   isPasswordMismatched = false;
@@ -20,7 +20,11 @@ export class SignupComponent implements OnInit {
   isProcessing = false;
   errorInResponse = false;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private authenticationService: AuthenticationService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private authenticationService: AuthenticationService,
+    private commonService: CommonService
+  ) { }
 
   ngOnInit(): void {
     this.initializeSignupForm();
@@ -43,12 +47,12 @@ export class SignupComponent implements OnInit {
   /**
    * Getter for easy access to form fields
    */
-  get f() { return this.signupForm.controls; }
+  get f(): any { return this.signupForm.controls; }
 
   /**
    * To hide error message instantly if it is being displayed after previous submission and user change the value.
    */
-  onKeyUp(type) {
+  onKeyUp(type): void {
     if (type === 'phone') { this.phoneExists = false; }
     if (type === 'email') { this.emailExists = false; }
     if (type === 'password') { this.isPasswordMismatched = false; }
@@ -57,22 +61,22 @@ export class SignupComponent implements OnInit {
   /**
    * Called on form submission.
    */
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
-    
+
     // return from here if form is invalid.
     if (this.signupForm.invalid) {
       return;
     }
 
-    //return from here if password and confirm password don't match.
+    // return from here if password and confirm password don't match.
     if (this.signupForm.value.password !== this.signupForm.value.confirmPassword) {
       this.isPasswordMismatched = true;
       return;
     }
     this.isProcessing = true;
-    this.user.firstName = this.signupForm.value.firstName;
-    this.user.lastName = this.signupForm.value.lastName;
+    this.user.firstName = this.commonService.capitalizeFirstLetter(this.signupForm.value.firstName);
+    this.user.lastName = this.commonService.capitalizeFirstLetter(this.signupForm.value.lastName);
     this.user.email = this.signupForm.value.email;
     this.user.phone = this.signupForm.value.contactNumber;
     this.user.password = this.signupForm.value.password;

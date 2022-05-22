@@ -1,0 +1,13 @@
+<nav id="sidebar" class="navbar-dark bg-dark" [ngClass]="{'hidden': isSideNavHidden }">
+    <ul class="navbar-nav">
+        <li class="nav-item" *ngFor="let item of sideNavItems">
+            <a class="nav-link" (click)="newRouteSelected()" [ngClass]="{'active-link': router.url == item.path }"
+                [routerLink]="item.path">{{item.name}}</a>
+        </li>
+    </ul>
+    <div class="bottom-content">
+        <img [src]="gender=='male'?menImage:womenImage" class="gender-image">
+        <p>{{userName}}</p>
+        <span class="nav-link sidenav-signout" (click)="signout()">Sign out</span>
+    </div>
+</nav>

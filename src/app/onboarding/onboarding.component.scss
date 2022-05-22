@@ -1,0 +1,33 @@
+.comp-title {
+    background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+    border-radius: 10px;
+    padding: 5px 8px;
+    font-size: larger;
+    font-weight: 900;
+    color: #47030f !important;
+}
+
+.onboarding-border {
+    margin-top: 82px;
+    min-height: 83vh;
+    padding: 30px;
+    border: #1b67e0 15px solid;
+    border-radius: 15px;
+    position: relative;
+}
+
+.onboard-header {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bolder;
+    text-decoration: underline;
+}
+
+.onboarding-border .prev-next-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 30px;
+    margin-right: 30px;
+}

@@ -4,7 +4,8 @@
 }
 
 .toast-success {
-    background-color: #16b307 !important;
+    // background-color: #16b307 !important;
+    background-color: #20a50a !important;
 }
 
 .toast-warning {
@@ -16,6 +17,12 @@
 }
 
 .ngx-toastr {
+    font-size: 15px;
     font-weight: 600 !important;
     border-radius: 10px !important;
 }
+
+@import "./style-bootstrap.scss";
+@import "./style-common.scss";
+@import url('https://fonts.googleapis.com/css?family=Muli:300,400,600&display=swap');
+

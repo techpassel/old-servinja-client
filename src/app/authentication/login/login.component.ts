@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from 'src/models/user.model';
+import { User } from 'src/models/user.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/services/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
-import { EncryptDecryptService } from "src/services/common/encrypt-decrypt.service";
 import { OnBoardingRoutes } from 'src/utils/common.util';
+import { StoreService } from 'src/services/common/store.service';
+import { NotificationUtil } from 'src/utils/notification.util';
+import { CommonService } from 'src/services/common/common.service';
 
 @Component({
   selector: 'app-login',
@@ -14,25 +16,27 @@ import { OnBoardingRoutes } from 'src/utils/common.util';
 })
 export class LoginComponent implements OnInit {
 
-  user: UserModel = new UserModel();
+  user: User = new User();
   submitted = false;
   signinForm: FormGroup;
   loginResponseType: string = null;
-  resendEmailKey: string;
+  resendEmailKey: number = null;
   isProcessing = false;
+  userNameType: string = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: SocialAuthService,
     private authenticationService: AuthenticationService,
     private router: Router,
-    private encriptionService : EncryptDecryptService
+    private storeService: StoreService,
+    private notify: NotificationUtil,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
     this.initializeSigninForm();
     this.setSocialUser();
-    // this.getSocialUserSigninResponse();
   }
 
   /**
@@ -56,7 +60,7 @@ export class LoginComponent implements OnInit {
    * Dynamically adding validation rule for phone and email based on what user have entered.
    */
   setEmailPhoneValidator(): void {
-    let usernameField = this.signinForm.get('username');
+    const usernameField = this.signinForm.get('username');
     if (this.isANumber(usernameField.value)) {
       usernameField.setValidators([Validators.required, Validators.compose([Validators.minLength(10), Validators.maxLength(10)])]);
     } else {
@@ -68,15 +72,15 @@ export class LoginComponent implements OnInit {
   /**
    * Getter for easy access to form fields
    */
-  get f() { return this.signinForm.controls; }
+  get f(): any { return this.signinForm.controls; }
 
   /**
    * Called on form submission.
    */
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
 
-    // return from here if form is invalid
+    // Return from here if all fields of the form is not valid
     if (this.signinForm.invalid) {
       return;
     }
@@ -93,36 +97,45 @@ export class LoginComponent implements OnInit {
     this.authenticationService.signin(user).subscribe(
       (response) => {
         const res: any = response;
-        this.loginResponseType = res.type;
-        if (res.type === 'success') {
-          let usersecret = {};          
-          usersecret['token'] = res.token;
-          usersecret['roles'] = res.roles;
-          usersecret['onboardingStage'] = parseInt(res.onboardingStage);
-          let enc = this.encriptionService.encrypt(usersecret);         
-          localStorage.setItem('access', enc);
-          
-          let routeType = null;
-          if(parseInt(res.onboardingStage) == 0){
-            routeType = res.roles.includes('admin') ? '/admin' : '/customer';
-          } else {
-            routeType = "/onboard/" + OnBoardingRoutes[parseInt(res.onboardingStage) - 1];
-          }
-          this.router.navigate([routeType]);
+        if (res.type === 'invalidUser') {
+          this.userNameType = this.isANumber(user.username) ? 'phone' : 'email';
+        } else if (res.type === 'userNotVerified') {
+          this.resendEmailKey = res.userId;
+        } else if (res.type === 'success') {
+          this.processSigninData(res);
         }
+        this.loginResponseType = res.type;
         this.isProcessing = false;
       },
       (error) => {
+        this.notify.showError('Some error occured. Please try again.');
         this.isProcessing = false;
       }
     );
   }
 
   /**
+   * To process signin data
+   */
+  processSigninData(res): void {
+    const usersecret: any = {};
+    usersecret.token = res.token;
+    usersecret.roles = res.roles;
+    usersecret.onboardingStage = parseInt(res.onboardingStage, 10);
+    this.storeService.saveAccessToken(usersecret);
+    let routeType = null;
+    if (parseInt(res.onboardingStage, 10) === 0) {
+      routeType = res.roles.includes('admin') ? '/admin' : '/customer';
+    } else {
+      routeType = '/onboard/' + OnBoardingRoutes[parseInt(res.onboardingStage, 10) - 1];
+    }
+    this.router.navigate([routeType]);
+  }
+
+  /**
    * Called on google signin
    */
   signInWithGoogle(): void {
-    this.submitted = true;
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
@@ -130,14 +143,13 @@ export class LoginComponent implements OnInit {
    * Called on facebook signin
    */
   signInWithFB(): void {
-    this.submitted = true;
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
 
   /**
-   * Called on signout from any social platforms
+   * Called after fetching data from social media platforms
    */
-  signOutSocialAccount(): void {
+  socialSignOut(): void {
     this.authService.signOut();
   }
 
@@ -146,35 +158,34 @@ export class LoginComponent implements OnInit {
    */
   setSocialUser(): void {
     this.authService.authState.subscribe(user => {
-      if (this.submitted === true) {
-        if (user) {
-          const socialUser: any = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            roles: 'customer'
-          };
-          this.socialUserSignin$(socialUser);
-        } else {
-          this.user = new UserModel();
-        }
+      if (user) {
+        const socialUser: any = {
+          firstName: this.commonService.capitalizeFirstLetter(user.firstName),
+          lastName: this.commonService.capitalizeFirstLetter(user.lastName),
+          email: user.email
+        };
+        this.socialUserSignin$(socialUser);
+        this.socialSignOut();
       }
     });
   }
 
   socialUserSignin$(user): void {
-    // this.authenticationService.signInSocialUser(user).subscribe(response => {
-    //   this.signOutSocialAccount();
-    //   this.router.navigate(['/customer']);
-    // });
+    this.authenticationService.signinSocialUser(user).subscribe(response => {
+      const res: any = response;
+      if (res.type === 'success') {
+        this.processSigninData(res);
+      }
+    });
   }
 
-  onKeyUp(type) {
-    if ((type === 'username' && this.loginResponseType === 'invalidUser') ||
+  onKeyUp(type): void {
+    if ((type === 'username' && this.loginResponseType !== 'incorrectPassword') ||
       (type === 'pass' && this.loginResponseType === 'incorrectPassword')) {
       this.loginResponseType = null;
+      this.userNameType = null;
+      this.resendEmailKey = null;
     }
   }
-
 
 }

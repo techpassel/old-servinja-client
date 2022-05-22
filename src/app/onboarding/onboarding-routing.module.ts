@@ -4,6 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { OnboardingComponent } from './onboarding.component';
 import { OnboardGuard } from 'src/guard/onboard.guard';
 import { ProfileCompletionComponent } from './profile-completion/profile-completion.component';
+import { MobileVerificationComponent } from './mobile-verification/mobile-verification.component';
+import { AddressComponent } from './address/address.component';
+import { DocumentComponent } from './document/document.component';
 
 const routes: Routes = [
   {
@@ -14,8 +17,16 @@ const routes: Routes = [
         component: ProfileCompletionComponent,
       },
       {
-        path: 'mobile-verification',
-        component: ProfileCompletionComponent,
+        path: 'verify-number',
+        component: MobileVerificationComponent,
+      },
+      {
+        path: 'address',
+        component: AddressComponent,
+      },
+      {
+        path: 'document',
+        component: DocumentComponent,
       }
     ],
   },

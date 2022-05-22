@@ -1,1 +1,19 @@
-<p>mobile-verification works!</p>
+<div class="onboard-header">Please verify your mobile number.</div>
+<div>
+    <div style="text-align: center;">
+        Your Number : <input type="text" [(ngModel)]="phone" disabled
+            style="width: 110px; border-radius: 5px; padding: 5px;"> &nbsp;&nbsp;
+        <button class="btn btn-success" (click)="sendOtp$()" [disabled]="isSendOtpBtnDisabled">Send OTP</button>
+        <div class="validation-error">{{displayMessage}}</div>
+
+        <div *ngIf="showOtpComponent">
+            <br><br>
+            <h4>Enter verification code</h4>
+            <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" [config]="config">
+            </ng-otp-input>
+            <p class="validation-error" *ngIf="lengthError">Otp must contain six digits.</p>
+            <br>
+            <button class="btn btn-orange" (click)="verifyOtp$()">Verify OTP</button>
+        </div>
+    </div>
+</div>

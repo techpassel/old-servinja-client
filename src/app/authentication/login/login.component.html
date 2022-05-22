@@ -1,17 +1,20 @@
 <div>
-    <h2>Sign In</h2>
+    <h3>Sign In</h3>
     <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
         <div>
-            <input type="text" (keyup)="onKeyUp('username')" (change)="setEmailPhoneValidator()" placeholder="Email or mobile number" formControlName="username">
+            <input type="text" (keydown)="onKeyUp('username'); setEmailPhoneValidator()"
+                placeholder="Email or mobile number" formControlName="username">
             <div *ngIf="submitted && f.username.errors" class="error-text">
                 <div *ngIf="f.username.errors.required">Email or Mobile number is required</div>
                 <div *ngIf="f.username.errors.email">Please enter a valid email address</div>
-                <div *ngIf="f.username.errors.minlength || f.username.errors.maxlength">Mobile number must contain 10 digits</div>
+                <div *ngIf="f.username.errors.minlength || f.username.errors.maxlength">Mobile number must contain 10
+                    digits</div>
             </div>
-            <div class="error-text" *ngIf="loginResponseType === 'invalidUser'">Email does not exists.</div>
+            <div class="error-text" *ngIf="loginResponseType === 'invalidUser'">
+                {{userNameType == 'email'?'Email':'Phone number'}} does not exists.</div>
         </div>
         <div>
-            <input type="password" (keyup)="onKeyUp('pass')" placeholder="Password" formControlName="password">
+            <input type="password" (keydown)="onKeyUp('pass')" placeholder="Password" formControlName="password">
             <div *ngIf="submitted && f.password.errors" class="error-text">
                 <div *ngIf="f.password.errors.required">Password is required</div>
                 <div *ngIf="f.password.errors.minlength">Password must be atleast 6 characters long</div>
@@ -20,23 +23,23 @@
         </div>
         <input type="submit" [value]="!isProcessing?'Submit':'Processing...'">
         <div class="row social-button-container">
-            <button class="col social-button g-login" (click)="signInWithGoogle()"><img class="social-logo"
-                    src="../../../assets/images/google-logo-png-open-2000.png"> Google</button>
-            <button class="col social-button f-login" (click)="signInWithFB()"><img class="social-logo1"
+            <button type="button" class="col social-button g-login" (click)="signInWithGoogle()"><img
+                    class="social-logo" src="../../../assets/images/google-logo-png-open-2000.png"> Google</button>
+            <button type="button" class="col social-button f-login" (click)="signInWithFB()"><img class="social-logo1"
                     src="../../../assets/images/ac.png"> Facebook</button>
         </div>
     </form>
-    <div class="update-path-container">
-        <ng-container *ngIf="loginResponseType === 'userNotVerified' && resendEmailKey; else elseTemplate">
-            <p>Your email is not yet verified. <a class="update-path"
-                    [routerLink]="['/resend-verification', resendEmailKey]">Click
-                    here</a> to resend verification email.</p>
+    <div class="update-path-container centered">
+        <ng-container *ngIf="loginResponseType === 'userNotVerified'; else elseTemplate">
+            <p class="error-text" style="font-size: 15px;"> <span class="light-text">Your email is not yet verified. Please verify your email
+                first. </span><a class="update-path" [routerLink]="['/resend-verification-email', resendEmailKey]">Click
+                    here</a><span class="light-text"> if you want to resend verification email.</span></p>
         </ng-container>
         <ng-template #elseTemplate>
             <a class="redirect-link" routerLink="/forget-password">Forget Password?</a>
+            <p>Don't have account?
+                <a class="update-path" routerLink="/">Join now</a>
+            </p>
         </ng-template>
-        <p>Don't have account?
-            <a class="update-path" routerLink="/">Join now</a>
-        </p>
     </div>
 </div>

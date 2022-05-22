@@ -1,0 +1,49 @@
+.navbar-dark .navbar-nav .nav-item .nav-link {
+    color: rgba(255, 255, 255, 1);
+}
+
+.active-nav-bar {
+    color: #05036b !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 7.5px;
+}
+
+.navbar-margin {
+    background-color: #10e7dc;
+    background-size: cover;
+    min-height: 100vh;
+    background-position: 50% 50%;
+    padding-top: 1px;
+    margin-top: -1px;
+    position: relative;
+}
+
+.signout-btn {
+    border: white 2px solid;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.error-text {
+    color: #fd1d1d;
+    font-size: 1vw;
+    margin-bottom: -1vw;
+    @media only screen and (max-width: 420px) {
+        font-size: 4.5vw;
+        padding: -1.5vw;
+        margin-bottom: -1.5vw;
+    }
+}
+
+.validation-error {
+    color: #fd1d1d;
+    font-size: 1.1vw;
+    font-weight: bolder;
+    margin-bottom: -1vw;
+    @media only screen and (max-width: 420px) {
+        font-size: 4.5vw;
+        padding: -1.5vw;
+        margin-bottom: -1.5vw;
+    }
+}

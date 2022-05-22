@@ -4,23 +4,23 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable({
     providedIn: 'root'
 })
-export class NotificationService {
+export class NotificationUtil {
 
     constructor(private toastr: ToastrService) { }
 
-    showSuccess(message, title?) {
+    showSuccess(message, title?): void {
         this.toastr.success(message, title);
     }
 
-    showError(message, title?) {
+    showError(message, title?): void {
         this.toastr.error(message, title);
     }
 
-    showWarning(message, title?){
+    showWarning(message, title?): void {
         this.toastr.warning(message, title);
     }
 
-    showInfo(message, title?){
+    showInfo(message, title?): void {
         this.toastr.info(message, title);
     }
 }
